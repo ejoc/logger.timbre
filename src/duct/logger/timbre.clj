@@ -1,7 +1,9 @@
 (ns duct.logger.timbre
   (:require [duct.logger :as logger]
             [integrant.core :as ig]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [taoensso.timbre.appenders.3rd-party.logstash :as logstash]
+            [taoensso.timbre.appenders.3rd-party.sentry :as sentry]))
 
 (defn brief-output-fn [{:keys [msg_]}]
   (force msg_))
@@ -21,6 +23,16 @@
 
 (defmethod ig/init-key ::brief [_ options]
   (brief-appender options))
+
+;; logstash appender
+(defmethod ig/init-key ::logstash [_ {:keys [host port opts]}]
+  (-> (logstash/logstash-appender host port opts)
+      (merge (select-keys opts [:min-level]))))
+
+;; sentry appender
+(defmethod ig/init-key ::sentry [_ {:keys [dsn & opts]}]
+  (-> (sentry/sentry-appender dsn opts)
+      (merge (select-keys opts [:min-level]))))
 
 (defn- duct-log-format? [vargs]
   (and (<= 1 (count vargs) 2)
