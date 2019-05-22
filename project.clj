@@ -1,6 +1,6 @@
-(defproject duct/logger.timbre "0.4.1"
+(defproject org.clojars.ejoc/logger.timbre "0.4.1"
   :description "Integrant methods for the Timbre logging library"
-  :url "https://github.com/duct-framework/logger.timbre"
+  :url "https://github.com/ejoc/logger.timbre"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha19"]
